@@ -59,11 +59,60 @@
         "documentation": {}
     },
     {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
         "label": "models",
         "importPath": "django.db",
         "description": "django.db",
         "isExtraImport": true,
         "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "datetime",
+        "description": "datetime",
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
         "documentation": {}
     },
     {
@@ -301,11 +350,29 @@
         "documentation": {}
     },
     {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "galeria.migrations.0003_fotografia_publicada",
+        "description": "galeria.migrations.0003_fotografia_publicada",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('galeria', '0002_fotografia_categoria'),\n    ]\n    operations = [\n        migrations.AddField(\n            model_name='fotografia',\n            name='publicada',\n            field=models.BooleanField(default=False),\n        ),",
+        "detail": "galeria.migrations.0003_fotografia_publicada",
+        "documentation": {}
+    },
+    {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "galeria.migrations.0004_fotografia_data_fotografia",
+        "description": "galeria.migrations.0004_fotografia_data_fotografia",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('galeria', '0003_fotografia_publicada'),\n    ]\n    operations = [\n        migrations.AddField(\n            model_name='fotografia',\n            name='data_fotografia',\n            field=models.DateTimeField(default=datetime.datetime.now),\n        ),",
+        "detail": "galeria.migrations.0004_fotografia_data_fotografia",
+        "documentation": {}
+    },
+    {
         "label": "ListaFotografias",
         "kind": 6,
         "importPath": "galeria.admin",
         "description": "galeria.admin",
-        "peekOfCode": "class ListaFotografias(admin.ModelAdmin):\n    list_display = (\"id\", \"nome\", \"legenda\")\n    list_display_links = (\"id\", \"nome\")\n    search_fields = (\"nome\",)\nadmin.site.register(Fotografia, ListaFotografias)",
+        "peekOfCode": "class ListaFotografias(admin.ModelAdmin):\n    list_display = (\"id\", \"nome\", \"legenda\", \"publicada\")\n    list_display_links = (\"id\", \"nome\")\n    search_fields = (\"nome\",)\n    list_filter= (\"categoria\",)\n    list_editable= (\"publicada\",)\n    list_per_page = 10\nadmin.site.register(Fotografia, ListaFotografias)",
         "detail": "galeria.admin",
         "documentation": {}
     },
@@ -341,7 +408,7 @@
         "kind": 2,
         "importPath": "galeria.views",
         "description": "galeria.views",
-        "peekOfCode": "def index(request):\n    fotografias = Fotografia.objects.all()\n    return render(request, 'galeria/index.html', {\"cards\": fotografias})\ndef imagem(request, foto_id):\n    fotografia = get_object_or_404(Fotografia, pk=foto_id)\n    return render(request, 'galeria/imagem.html', {\"fotografia\": fotografia})",
+        "peekOfCode": "def index(request):\n    fotografias = Fotografia.objects.order_by(\"-data_fotografia\").filter(publicada=True)\n    return render(request, 'galeria/index.html', {\"cards\": fotografias})\ndef imagem(request, foto_id):\n    fotografia = get_object_or_404(Fotografia, pk=foto_id)\n    return render(request, 'galeria/imagem.html', {\"fotografia\": fotografia})",
         "detail": "galeria.views",
         "documentation": {}
     },
