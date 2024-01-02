@@ -43,6 +43,22 @@
         "documentation": {}
     },
     {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
         "label": "models",
         "importPath": "django.db",
         "description": "django.db",
@@ -64,6 +80,22 @@
         "description": "django.contrib",
         "isExtraImport": true,
         "detail": "django.contrib",
+        "documentation": {}
+    },
+    {
+        "label": "Fotografia",
+        "importPath": "galeria.models",
+        "description": "galeria.models",
+        "isExtraImport": true,
+        "detail": "galeria.models",
+        "documentation": {}
+    },
+    {
+        "label": "Fotografia",
+        "importPath": "galeria.models",
+        "description": "galeria.models",
+        "isExtraImport": true,
+        "detail": "galeria.models",
         "documentation": {}
     },
     {
@@ -124,6 +156,14 @@
     },
     {
         "label": "render",
+        "importPath": "django.shortcuts",
+        "description": "django.shortcuts",
+        "isExtraImport": true,
+        "detail": "django.shortcuts",
+        "documentation": {}
+    },
+    {
+        "label": "get_object_or_404",
         "importPath": "django.shortcuts",
         "description": "django.shortcuts",
         "isExtraImport": true,
@@ -252,6 +292,24 @@
         "documentation": {}
     },
     {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "galeria.migrations.0002_fotografia_categoria",
+        "description": "galeria.migrations.0002_fotografia_categoria",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('galeria', '0001_initial'),\n    ]\n    operations = [\n        migrations.AddField(\n            model_name='fotografia',\n            name='categoria',\n            field=models.CharField(choices=[('NEBULOSA', 'Nebulosa'), ('ESTRELA', 'Estrela'), ('GALÁXIA', 'Galáxia'), ('PLANETA', 'Planeta')], default='', max_length=100),\n        ),",
+        "detail": "galeria.migrations.0002_fotografia_categoria",
+        "documentation": {}
+    },
+    {
+        "label": "ListaFotografias",
+        "kind": 6,
+        "importPath": "galeria.admin",
+        "description": "galeria.admin",
+        "peekOfCode": "class ListaFotografias(admin.ModelAdmin):\n    list_display = (\"id\", \"nome\", \"legenda\")\n    list_display_links = (\"id\", \"nome\")\n    search_fields = (\"nome\",)\nadmin.site.register(Fotografia, ListaFotografias)",
+        "detail": "galeria.admin",
+        "documentation": {}
+    },
+    {
         "label": "GaleriaConfig",
         "kind": 6,
         "importPath": "galeria.apps",
@@ -265,7 +323,7 @@
         "kind": 6,
         "importPath": "galeria.models",
         "description": "galeria.models",
-        "peekOfCode": "class Fotografia(models.Model):\n    #Colunas\n    nome = models.CharField(max_length=100, null=False, blank=False)\n    legenda = models.CharField(max_length=150, null=False, blank=False)\n    descricao = models.TextField(null=False, blank=False)\n    foto = models.CharField(max_length=100, null=False, blank=False)\n    def __str__(self):\n        return f\"Fotografia [nome={self.nome}]\"",
+        "peekOfCode": "class Fotografia(models.Model):\n    #Colunas\n    OPCOES_CATEGORIA = [\n        (\"NEBULOSA\", \"Nebulosa\"),\n        (\"ESTRELA\", \"Estrela\"),\n        (\"GALÁXIA\", \"Galáxia\"),\n        (\"PLANETA\", \"Planeta\")\n    ]\n    nome = models.CharField(max_length=100, null=False, blank=False)\n    legenda = models.CharField(max_length=150, null=False, blank=False)",
         "detail": "galeria.models",
         "documentation": {}
     },
@@ -274,7 +332,7 @@
         "kind": 5,
         "importPath": "galeria.urls",
         "description": "galeria.urls",
-        "peekOfCode": "urlpatterns = [\n    path('', index, name='index'),\n    path('imagem', imagem, name='imagem'),\n]",
+        "peekOfCode": "urlpatterns = [\n    path('', index, name='index'),\n    path('imagem/<int:foto_id>', imagem, name='imagem'),\n]",
         "detail": "galeria.urls",
         "documentation": {}
     },
@@ -283,7 +341,7 @@
         "kind": 2,
         "importPath": "galeria.views",
         "description": "galeria.views",
-        "peekOfCode": "def index(request):\n    dados = {\n    1: {\"nome\": \"Nebulosa de Carina\",\n        \"legenda\": \"webbtelescope.org/NASA/James Webb\"\n    },\n    2: {\"nome\": \"Galaxia NGC\", \"legenda\": \"nasa.org/NASA/Hubble\"},\n    }\n    return render(request, 'galeria/index.html', {\"cards\": dados})\ndef imagem(request):\n    return render(request, 'galeria/imagem.html')",
+        "peekOfCode": "def index(request):\n    fotografias = Fotografia.objects.all()\n    return render(request, 'galeria/index.html', {\"cards\": fotografias})\ndef imagem(request, foto_id):\n    fotografia = get_object_or_404(Fotografia, pk=foto_id)\n    return render(request, 'galeria/imagem.html', {\"fotografia\": fotografia})",
         "detail": "galeria.views",
         "documentation": {}
     },
@@ -292,7 +350,7 @@
         "kind": 2,
         "importPath": "galeria.views",
         "description": "galeria.views",
-        "peekOfCode": "def imagem(request):\n    return render(request, 'galeria/imagem.html')",
+        "peekOfCode": "def imagem(request, foto_id):\n    fotografia = get_object_or_404(Fotografia, pk=foto_id)\n    return render(request, 'galeria/imagem.html', {\"fotografia\": fotografia})",
         "detail": "galeria.views",
         "documentation": {}
     },
@@ -337,7 +395,7 @@
         "kind": 5,
         "importPath": "setup.settings",
         "description": "setup.settings",
-        "peekOfCode": "ALLOWED_HOSTS = []\n# Application definition\nINSTALLED_APPS = [\n    'django.contrib.admin',\n    'django.contrib.auth',\n    'django.contrib.contenttypes',\n    'django.contrib.sessions',\n    'django.contrib.messages',\n    'django.contrib.staticfiles',\n    'galeria',",
+        "peekOfCode": "ALLOWED_HOSTS = []\n# Application definition\nINSTALLED_APPS = [\n    'django.contrib.admin',\n    'django.contrib.auth',\n    'django.contrib.contenttypes',\n    'django.contrib.sessions',\n    'django.contrib.messages',\n    'django.contrib.staticfiles',\n    'galeria.apps.GaleriaConfig',",
         "detail": "setup.settings",
         "documentation": {}
     },
@@ -346,7 +404,7 @@
         "kind": 5,
         "importPath": "setup.settings",
         "description": "setup.settings",
-        "peekOfCode": "INSTALLED_APPS = [\n    'django.contrib.admin',\n    'django.contrib.auth',\n    'django.contrib.contenttypes',\n    'django.contrib.sessions',\n    'django.contrib.messages',\n    'django.contrib.staticfiles',\n    'galeria',\n]\nMIDDLEWARE = [",
+        "peekOfCode": "INSTALLED_APPS = [\n    'django.contrib.admin',\n    'django.contrib.auth',\n    'django.contrib.contenttypes',\n    'django.contrib.sessions',\n    'django.contrib.messages',\n    'django.contrib.staticfiles',\n    'galeria.apps.GaleriaConfig',\n]\nMIDDLEWARE = [",
         "detail": "setup.settings",
         "documentation": {}
     },
