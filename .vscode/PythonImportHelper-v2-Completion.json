@@ -91,6 +91,22 @@
         "documentation": {}
     },
     {
+        "label": "migrations",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "django.db",
+        "description": "django.db",
+        "isExtraImport": true,
+        "detail": "django.db",
+        "documentation": {}
+    },
+    {
         "label": "models",
         "importPath": "django.db",
         "description": "django.db",
@@ -204,6 +220,14 @@
         "documentation": {}
     },
     {
+        "label": "buscar",
+        "importPath": "galeria.views",
+        "description": "galeria.views",
+        "isExtraImport": true,
+        "detail": "galeria.views",
+        "documentation": {}
+    },
+    {
         "label": "render",
         "importPath": "django.shortcuts",
         "description": "django.shortcuts",
@@ -249,6 +273,22 @@
         "description": "dotenv",
         "isExtraImport": true,
         "detail": "dotenv",
+        "documentation": {}
+    },
+    {
+        "label": "settings",
+        "importPath": "django.conf",
+        "description": "django.conf",
+        "isExtraImport": true,
+        "detail": "django.conf",
+        "documentation": {}
+    },
+    {
+        "label": "static",
+        "importPath": "django.conf.urls.static",
+        "description": "django.conf.urls.static",
+        "isExtraImport": true,
+        "detail": "django.conf.urls.static",
         "documentation": {}
     },
     {
@@ -368,6 +408,15 @@
         "documentation": {}
     },
     {
+        "label": "Migration",
+        "kind": 6,
+        "importPath": "galeria.migrations.0005_alter_fotografia_foto",
+        "description": "galeria.migrations.0005_alter_fotografia_foto",
+        "peekOfCode": "class Migration(migrations.Migration):\n    dependencies = [\n        ('galeria', '0004_fotografia_data_fotografia'),\n    ]\n    operations = [\n        migrations.AlterField(\n            model_name='fotografia',\n            name='foto',\n            field=models.ImageField(blank=True, upload_to='fotos/%Y/%m/%d/'),\n        ),",
+        "detail": "galeria.migrations.0005_alter_fotografia_foto",
+        "documentation": {}
+    },
+    {
         "label": "ListaFotografias",
         "kind": 6,
         "importPath": "galeria.admin",
@@ -399,7 +448,7 @@
         "kind": 5,
         "importPath": "galeria.urls",
         "description": "galeria.urls",
-        "peekOfCode": "urlpatterns = [\n    path('', index, name='index'),\n    path('imagem/<int:foto_id>', imagem, name='imagem'),\n]",
+        "peekOfCode": "urlpatterns = [\n    path('', index, name='index'),\n    path('imagem/<int:foto_id>', imagem, name='imagem'),\n    path('buscar', buscar, name='buscar')\n]",
         "detail": "galeria.urls",
         "documentation": {}
     },
@@ -408,7 +457,7 @@
         "kind": 2,
         "importPath": "galeria.views",
         "description": "galeria.views",
-        "peekOfCode": "def index(request):\n    fotografias = Fotografia.objects.order_by(\"-data_fotografia\").filter(publicada=True)\n    return render(request, 'galeria/index.html', {\"cards\": fotografias})\ndef imagem(request, foto_id):\n    fotografia = get_object_or_404(Fotografia, pk=foto_id)\n    return render(request, 'galeria/imagem.html', {\"fotografia\": fotografia})",
+        "peekOfCode": "def index(request):\n    fotografias = Fotografia.objects.order_by(\"-data_fotografia\").filter(publicada=True)\n    return render(request, 'galeria/index.html', {\"cards\": fotografias})\ndef imagem(request, foto_id):\n    fotografia = get_object_or_404(Fotografia, pk=foto_id)\n    return render(request, 'galeria/imagem.html', {\"fotografia\": fotografia})\ndef buscar(request):\n    fotografias = Fotografia.objects.order_by(\"-data_fotografia\").filter(publicada=True)\n    if \"buscar\" in request.GET:\n        nome_a_buscar = request.GET['buscar']",
         "detail": "galeria.views",
         "documentation": {}
     },
@@ -417,7 +466,16 @@
         "kind": 2,
         "importPath": "galeria.views",
         "description": "galeria.views",
-        "peekOfCode": "def imagem(request, foto_id):\n    fotografia = get_object_or_404(Fotografia, pk=foto_id)\n    return render(request, 'galeria/imagem.html', {\"fotografia\": fotografia})",
+        "peekOfCode": "def imagem(request, foto_id):\n    fotografia = get_object_or_404(Fotografia, pk=foto_id)\n    return render(request, 'galeria/imagem.html', {\"fotografia\": fotografia})\ndef buscar(request):\n    fotografias = Fotografia.objects.order_by(\"-data_fotografia\").filter(publicada=True)\n    if \"buscar\" in request.GET:\n        nome_a_buscar = request.GET['buscar']\n        if nome_a_buscar:\n            fotografias = fotografias.filter(nome__icontains=nome_a_buscar)\n    return render(request, 'galeria/buscar.html', {\"cards\": fotografias})",
+        "detail": "galeria.views",
+        "documentation": {}
+    },
+    {
+        "label": "buscar",
+        "kind": 2,
+        "importPath": "galeria.views",
+        "description": "galeria.views",
+        "peekOfCode": "def buscar(request):\n    fotografias = Fotografia.objects.order_by(\"-data_fotografia\").filter(publicada=True)\n    if \"buscar\" in request.GET:\n        nome_a_buscar = request.GET['buscar']\n        if nome_a_buscar:\n            fotografias = fotografias.filter(nome__icontains=nome_a_buscar)\n    return render(request, 'galeria/buscar.html', {\"cards\": fotografias})",
         "detail": "galeria.views",
         "documentation": {}
     },
@@ -552,7 +610,7 @@
         "kind": 5,
         "importPath": "setup.settings",
         "description": "setup.settings",
-        "peekOfCode": "USE_I18N = True\nUSE_TZ = True\n# Static files (CSS, JavaScript, Images)\n# https://docs.djangoproject.com/en/5.0/howto/static-files/\nSTATIC_URL = 'static/'\nSTATICFILES_DIRS = [\n    os.path.join(BASE_DIR, 'setup/static')\n]\nSTATIC_ROOT = os.path.join(BASE_DIR, 'static')\n# Default primary key field type",
+        "peekOfCode": "USE_I18N = True\nUSE_TZ = True\n# Static files (CSS, JavaScript, Images)\n# https://docs.djangoproject.com/en/5.0/howto/static-files/\nSTATIC_URL = 'static/'\nSTATICFILES_DIRS = [\n    os.path.join(BASE_DIR, 'setup/static')\n]\nSTATIC_ROOT = os.path.join(BASE_DIR, 'static')\n# Media",
         "detail": "setup.settings",
         "documentation": {}
     },
@@ -561,7 +619,7 @@
         "kind": 5,
         "importPath": "setup.settings",
         "description": "setup.settings",
-        "peekOfCode": "USE_TZ = True\n# Static files (CSS, JavaScript, Images)\n# https://docs.djangoproject.com/en/5.0/howto/static-files/\nSTATIC_URL = 'static/'\nSTATICFILES_DIRS = [\n    os.path.join(BASE_DIR, 'setup/static')\n]\nSTATIC_ROOT = os.path.join(BASE_DIR, 'static')\n# Default primary key field type\n# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field",
+        "peekOfCode": "USE_TZ = True\n# Static files (CSS, JavaScript, Images)\n# https://docs.djangoproject.com/en/5.0/howto/static-files/\nSTATIC_URL = 'static/'\nSTATICFILES_DIRS = [\n    os.path.join(BASE_DIR, 'setup/static')\n]\nSTATIC_ROOT = os.path.join(BASE_DIR, 'static')\n# Media\nMEDIA_ROOT = os.path.join(BASE_DIR, 'media')",
         "detail": "setup.settings",
         "documentation": {}
     },
@@ -570,7 +628,7 @@
         "kind": 5,
         "importPath": "setup.settings",
         "description": "setup.settings",
-        "peekOfCode": "STATIC_URL = 'static/'\nSTATICFILES_DIRS = [\n    os.path.join(BASE_DIR, 'setup/static')\n]\nSTATIC_ROOT = os.path.join(BASE_DIR, 'static')\n# Default primary key field type\n# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field\nDEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'",
+        "peekOfCode": "STATIC_URL = 'static/'\nSTATICFILES_DIRS = [\n    os.path.join(BASE_DIR, 'setup/static')\n]\nSTATIC_ROOT = os.path.join(BASE_DIR, 'static')\n# Media\nMEDIA_ROOT = os.path.join(BASE_DIR, 'media')\nMEDIA_URL = '/media/'\n# Default primary key field type\n# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field",
         "detail": "setup.settings",
         "documentation": {}
     },
@@ -579,7 +637,7 @@
         "kind": 5,
         "importPath": "setup.settings",
         "description": "setup.settings",
-        "peekOfCode": "STATICFILES_DIRS = [\n    os.path.join(BASE_DIR, 'setup/static')\n]\nSTATIC_ROOT = os.path.join(BASE_DIR, 'static')\n# Default primary key field type\n# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field\nDEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'",
+        "peekOfCode": "STATICFILES_DIRS = [\n    os.path.join(BASE_DIR, 'setup/static')\n]\nSTATIC_ROOT = os.path.join(BASE_DIR, 'static')\n# Media\nMEDIA_ROOT = os.path.join(BASE_DIR, 'media')\nMEDIA_URL = '/media/'\n# Default primary key field type\n# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field\nDEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'",
         "detail": "setup.settings",
         "documentation": {}
     },
@@ -588,7 +646,25 @@
         "kind": 5,
         "importPath": "setup.settings",
         "description": "setup.settings",
-        "peekOfCode": "STATIC_ROOT = os.path.join(BASE_DIR, 'static')\n# Default primary key field type\n# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field\nDEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'",
+        "peekOfCode": "STATIC_ROOT = os.path.join(BASE_DIR, 'static')\n# Media\nMEDIA_ROOT = os.path.join(BASE_DIR, 'media')\nMEDIA_URL = '/media/'\n# Default primary key field type\n# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field\nDEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'",
+        "detail": "setup.settings",
+        "documentation": {}
+    },
+    {
+        "label": "MEDIA_ROOT",
+        "kind": 5,
+        "importPath": "setup.settings",
+        "description": "setup.settings",
+        "peekOfCode": "MEDIA_ROOT = os.path.join(BASE_DIR, 'media')\nMEDIA_URL = '/media/'\n# Default primary key field type\n# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field\nDEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'",
+        "detail": "setup.settings",
+        "documentation": {}
+    },
+    {
+        "label": "MEDIA_URL",
+        "kind": 5,
+        "importPath": "setup.settings",
+        "description": "setup.settings",
+        "peekOfCode": "MEDIA_URL = '/media/'\n# Default primary key field type\n# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field\nDEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'",
         "detail": "setup.settings",
         "documentation": {}
     },
@@ -606,7 +682,7 @@
         "kind": 5,
         "importPath": "setup.urls",
         "description": "setup.urls",
-        "peekOfCode": "urlpatterns = [\n    path('admin/', admin.site.urls),\n    path('', include('galeria.urls'))\n    # path('', index),\n]",
+        "peekOfCode": "urlpatterns = [\n    path('admin/', admin.site.urls),\n    path('', include('galeria.urls'))\n    # path('', index),\n] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)",
         "detail": "setup.urls",
         "documentation": {}
     },
